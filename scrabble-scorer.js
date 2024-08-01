@@ -37,7 +37,7 @@ function oldScrabbleScorer(word) {
 
 function initialPrompt() {
    userInput = input.question("Let's play some scrabble! Enter a word to score:");
-};
+ };
 
 function simpleScorer(userInput) {
   let score = 0;
@@ -58,40 +58,18 @@ function vowelBonusScorer(userInput) {
 return score
 };
 
-let newPointStructure = {
-  a: [1],
-  b: [3],
-  c: [3],
-  d: [2],
-  e: [1],
-  f: [4],
-  g: [2],
-  h: [4],
-  i: [1],
-  j: [8],
-  k: [5],
-  l: [1],
-  m: [3],
-  n: [1],
-  o: [1],
-  p: [3],
-  q: [10],
-  r: [1],
-  s: [1],
-  t: [1],
-  u: [1],
-  v: [4],
-  w: [4],
-  x: [8],
-  y: [4],
-  z: [10]
+let newPointStructure = transform(oldPointStructure); 
+
+
+function scrabbleScorer(word) {
+  word = word.toLowerCase();
+	let score = 0;
+	for (let i = 0; i < word.length; i++) {
+	  score += newPointStructure[word[i]];
+}
+  console.log(`score for ${word}: ${score}`);
+	return score;
 };
-
-//let simpleScorer;
-
-//let vowelBonusScorer;
-
-let scrabbleScorer;
 
 const scoringAlgorithms = [ {
   name: "Simple Scorer",
@@ -104,7 +82,7 @@ const scoringAlgorithms = [ {
 
  { name: "Scrabble Scorer",
   description: "The traditional scoring algorithm.",
-  scorerFunction: oldScrabbleScorer, }];
+  scorerFunction: scrabbleScorer, }];
 
 function scorerPrompt() {
   let scoringSelection = input.question("Please select your scoring algorithm as one of the following: 0 for Simpler Scoring, 1 for Vowel Bonus Scoring, or 2 for Classic Scrabble scoring.");  
@@ -113,15 +91,20 @@ function scorerPrompt() {
   
 }
 
-function transform() {};
+function transform(oldPointStructure) {
+  let transformedObject = {}; 
+  for (item in oldPointStructure) {
+    for (let i = 0; i < oldPointStructure[item].length ; i++) {
+      transformedObject[oldPointStructure[item][i].toLowerCase()] = Number(item);
+   }
+  }
+  return transformedObject
+};
 
 function runProgram() {
    initialPrompt();
     scorerPrompt();
-    //console.log(oldScrabbleScorer(userInput));
-    //simpleScorer(userInput);
-    //vowelBonusScorer(userInput);
-}
+  }
 
 // Don't write any code below this line //
 // And don't change these or your program will not run as expected //
